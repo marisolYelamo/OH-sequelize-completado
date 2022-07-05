@@ -11,10 +11,12 @@ const db= require('../confdb')
 
 class Productos extends S.Model{
     static sinStock(){
-        console.log('ACA ESTOY MARI')
-     /* const productosSinStock= Productos.findAll() */
-     return 'hola chicos'
-    } 
+      return Productos.findAll({where:{stock: 0}})
+    }
+    
+    ganancia(stock, precio){
+
+    }
 }
 
 Productos.init({
@@ -39,7 +41,7 @@ Productos.init({
         type: S.INTEGER,
         allowNull: true
     },
-},{sequelize: db , modelName:'producto'})
+},{sequelize: db , modelName:'productos'})
 
 //metodo de clase 
 // findOne, findAll, findByPk,

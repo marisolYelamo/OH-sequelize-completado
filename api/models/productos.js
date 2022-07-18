@@ -1,51 +1,58 @@
 const S= require('sequelize')
 const db= require('../confdb')
 
-/* Modelo Producto {
-	nombre: string
-	precio: int
-	descripcion: string
-	disponible: booleano = default true
- 	stock: int
-} */
 
 class Productos extends S.Model{
     static sinStock(){
-        console.log('ACA ESTOY MARI')
-     /* const productosSinStock= Productos.findAll() */
-     return 'hola chicos'
+      const products= Productos.findAndCountAll({where:{
+           stock:0
+       }})
+       return products
     } 
+    ganancia(){
+        let precio=this.dataValues.precio
+        let stock= this.dataValues.stock
+     return stock * precio
+    }
 }
 
 Productos.init({
     nombre:{
         type: S.STRING,
-        allowNull: false
+        
     },
     precio:{
         type: S.INTEGER,
-        allowNull: false
+        get(){
+          let precio=  this.getDataValue('precio')
+          return `$${precio}`
+        }
+        
     },
-    desciption:{
+    descripcion:{
         type: S.STRING,
        
     },
     disponible:{
         type: S.BOOLEAN,
         defaultValue:true,
-        allowNull: false
+        
     },
     stock:{
         type: S.INTEGER,
-        allowNull: true
+        
     },
 },{sequelize: db , modelName:'producto'})
 
-//metodo de clase 
-// findOne, findAll, findByPk,
-/* Productos.sinStock= function(){
-    console.log('ACA ESTOY MARI')
- const productosSinStock= Productos.findOne({where: {nombre: 'leche' }})
- return productosSinStock
-}  */
+
+Productos.beforeCreate((producto)=>{
+    if(producto.stock== 0){
+        producto.disponible= false
+    }
+    if(!producto.disponible){ 
+   producto.nombre= `${producto.nombre} NO DISPONIBLE`
+  
+}}
+)
+
 module.exports= Productos

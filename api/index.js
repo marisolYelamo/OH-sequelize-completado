@@ -14,4 +14,4 @@ db.sync({force:false}).then(()=>{
 })
 
 
-)
+

@@ -1,6 +1,6 @@
 const Productos= require('./productos')
 const Categorias= require('./categorias')
-Categorias.hasMany(Productos)
+Productos.hasMany(Categorias)
 //hasMany
 //hasOne
 //belongTo

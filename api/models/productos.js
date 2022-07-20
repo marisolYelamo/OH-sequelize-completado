@@ -19,7 +19,7 @@ class Productos extends S.Model{
 Productos.init({
     nombre:{
         type: S.STRING,
-        
+        unique:true
     },
     precio:{
         type: S.INTEGER,
@@ -30,7 +30,7 @@ Productos.init({
         
     },
     descripcion:{
-        type: S.STRING,
+        type: S.TEXT,
        
     },
     disponible:{
@@ -42,17 +42,12 @@ Productos.init({
         type: S.INTEGER,
         
     },
-},{sequelize: db , modelName:'producto'})
-
-
-Productos.beforeCreate((producto)=>{
-    if(producto.stock== 0){
-        producto.disponible= false
+    estado:{
+        type: S.VIRTUAL,
+        get(){
+            let boolean = this.dataValues.disponible
+            console.log(boolean)
+           return boolean ? `${this.dataValues.nombre} DISPONIBLE`:`${this.dataValues.nombre} NO DISPONIBLE`
+        }
     }
-    if(!producto.disponible){ 
-   producto.nombre= `${producto.nombre} NO DISPONIBLE`
-  
-}}
-)
-
-module.exports= Productos
+},{sequelize: db , modelName:'producto'})
